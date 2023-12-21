@@ -1,0 +1,13 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "instrument": { "type": ["string", "null"] },
+    "symbol": { "type": ["string", "null"] },
+    "name": { "type": ["string", "null"] },
+    "exchange": { "type": ["string", "null"] },
+    "unit": { "type": ["integer", "null"] },
+    "type": { "type": ["string", "null"] },
+    "supportStopOrder": { "type": ["boolean", "null"] },
+    "supportLimitOrder": { "type": ["boolean", "null"] }
+  }
+}

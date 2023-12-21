@@ -1,0 +1,21 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "id": { "type": ["integer", "null"] },
+    "name": { "type": ["string", "null"] },
+    "parentID": { "type": ["integer", "null"] },
+    "expanded": { "type": ["boolean", "null"] },
+    "level": { "type": ["integer", "null"] },
+    "field": { "type": ["string", "null"] },
+    "values": {
+      "type": ["array", "null"],
+      "properties": {
+        "period": { "type": ["string", "null"] },
+        "year": { "type": ["integer", "null"] },
+        "quarter": { "type": ["integer", "null"] },
+        "value": { "type": ["number", "null"] }
+      }
+    },
+    "symbol": { "type": ["string", "null"] }
+  }
+}

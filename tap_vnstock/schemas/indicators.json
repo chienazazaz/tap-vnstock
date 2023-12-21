@@ -1,0 +1,14 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "name": { "type": ["string", "null"] },
+    "shortName": { "type": ["string", "null"] },
+    "description": { "type": ["string", "null"] },
+    "group": { "type": ["number", "null"] },
+    "groupName": { "type": ["string", "null"] },
+    "value": { "type": ["number", "null"] },
+    "change": { "type": ["number", "null"] },
+    "industryValue": { "type": ["number", "null"] },
+    "symbol": { "type": ["string", "null"] }
+  }
+}

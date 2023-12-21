@@ -1,0 +1,31 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "date": { "type": ["string", "null"] },
+    "symbol": { "type": ["string", "null"] },
+    "priceHigh": { "type": ["number", "null"] },
+    "priceLow": { "type": ["number", "null"] },
+    "priceOpen": { "type": ["number", "null"] },
+    "priceAverage": { "type": ["number", "null"] },
+    "priceClose": { "type": ["number", "null"] },
+    "priceBasic": { "type": ["number", "null"] },
+    "totalVolume": { "type": ["number", "null"] },
+    "dealVolume": { "type": ["number", "null"] },
+    "putthroughVolume": { "type": ["number", "null"] },
+    "totalValue": { "type": ["number", "null"] },
+    "putthroughValue": { "type": ["number", "null"] },
+    "buyForeignQuantity": { "type": ["number", "null"] },
+    "buyForeignValue": { "type": ["number", "null"] },
+    "sellForeignQuantity": { "type": ["number", "null"] },
+    "sellForeignValue": { "type": ["number", "null"] },
+    "buyCount": { "type": ["number", "null"] },
+    "buyQuantity": { "type": ["number", "null"] },
+    "sellCount": { "type": ["number", "null"] },
+    "sellQuantity": { "type": ["number", "null"] },
+    "adjRatio": { "type": ["number", "null"] },
+    "currentForeignRoom": { "type": ["number", "null"] },
+    "propTradingNetDealValue": { "type": ["number", "null"] },
+    "propTradingNetPTValue": { "type": ["number", "null"] },
+    "propTradingNetValue": { "type": ["number", "null"] }
+  }
+}

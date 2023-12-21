@@ -1,0 +1,11 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "id": { "type": ["string", "null"] },
+    "label": { "type": ["string", "null"] },
+    "date": { "type": ["string", "null"] },
+    "title": { "type": ["string", "null"] },
+    "color": { "type": ["string", "null"] },
+    "symbol": { "type": ["string", "null"] }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "type": ["null", "object"],
+  "properties": {
+    "symbol": { "type": ["string", "null"] },
+    "companyType": { "type": ["number", "null"] },
+    "sharesOutstanding": { "type": ["number", "null"] },
+    "freeShares": { "type": ["number", "null"] },
+    "beta": { "type": ["number", "null"] },
+    "dividend": { "type": ["number", "null"] },
+    "dividendYield": { "type": ["number", "null"] },
+    "marketCap": { "type": ["number", "null"] },
+    "low52Week": { "type": ["number", "null"] },
+    "high52Week": { "type": ["number", "null"] },
+    "priceChange1y": { "type": ["number", "null"] },
+    "avgVolume10d": { "type": ["number", "null"] },
+    "avgVolume3m": { "type": ["number", "null"] },
+    "pe": { "type": ["number", "null"] },
+    "eps": { "type": ["number", "null"] },
+    "sales_TTM": { "type": ["number", "null"] },
+    "netProfit_TTM": { "type": ["number", "null"] },
+    "insiderOwnership": { "type": ["number", "null"] },
+    "institutionOwnership": { "type": ["number", "null"] },
+    "foreignOwnership": { "type": ["number", "null"] }
+  }
+}
