@@ -50,7 +50,7 @@ class QuotesStream(vnstockStream):
 
     replication_key = "date"
 
-    replication_method = "FULL_TABLE"
+    replication_method = "INCREMENTAL"
 
     schema_filepath = SCHEMAS_DIR / "quotes.json"
 

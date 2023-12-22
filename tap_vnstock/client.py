@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Dict,Optional
 
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from singer_sdk.authenticators import BearerTokenAuthenticator
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.pagination import BaseAPIPaginator  # noqa: TCH002
@@ -88,8 +88,10 @@ class vnstockStream(RESTStream):
         starting_date = self.get_starting_replication_key_value(context)
         if starting_date:
             params["startDate"] = starting_date.format('YYYY-MM-DD')
+        elif self.config.get('start_date'):
+            params["startDate"] = self.config.get('start_date')
         else:
-            params["startDate"] = self.config.get("start_date")
+            params["startDate"] = (datetime.today())-timedelta(days=7)
         params["endDate"] = (datetime.today(),)
         return params
         
