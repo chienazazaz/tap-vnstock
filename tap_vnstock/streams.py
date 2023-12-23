@@ -32,7 +32,7 @@ class InstrumentsStream(vnstockStream):
         if (record.get("type") == "stock") & (len(record.get("symbol"))=='3'):
             return {"symbol": record["symbol"]}
         else:
-            return {}
+            return {"symbol": None}
 
 
 class QuotesStream(vnstockStream):
