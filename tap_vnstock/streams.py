@@ -29,7 +29,7 @@ class InstrumentsStream(vnstockStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict | None:
         """Return a context dictionary for child streams."""
-        if record.get("type") == "stock" & len(record["symbol"])==3:
+        if (record.get("type") == "stock") & (len(record.get("symbol"))=='3'):
             return {"symbol": record["symbol"]}
         else:
             return {}
@@ -88,12 +88,12 @@ class EventsStream(vnstockStream):
 
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
-        symbol_search = re.search('symbols/(\w{3})/timescale-marks', response.url, re.IGNORECASE)
-        assert symbol_search is not None
-        symbol = symbol_search.group(1)
+        if resp_json:
+            symbol_search = re.search('symbols/(\w{3})/timescale-marks', response.url, re.IGNORECASE)
+            assert symbol_search is not None
+            symbol = symbol_search.group(1)
         for row in resp_json:
             row.update({"symbol":symbol})
-            
             yield row
 
 
@@ -305,5 +305,4 @@ class IndicatorsStream(vnstockStream):
             symbol = symbol_search.group(1)
             for row in resp_json:
                 row.update({"symbol":symbol})
-                
                 yield row

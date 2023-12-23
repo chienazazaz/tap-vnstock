@@ -38,6 +38,12 @@ class Tapvnstock(Tap):
     name = "tap-vnstock"
 
     config_jsonschema = th.PropertiesList(
+        th.Property(
+            "access_token",
+            th.StringType,
+            required=True,
+        ),
+
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
