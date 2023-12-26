@@ -97,32 +97,6 @@ class EventsStream(vnstockStream):
             yield row
 
 
-# class FundamentalStream(vnstockStream):
-#     """Fundamental stream"""
-
-#     parent_stream_type = InstrumentsStream
-
-#     records_jsonpath = "$"
-
-#     name = "fundamental"
-
-#     path = "/symbols/{symbol}/fundamental"
-
-#     primary_keys: ClassVar[list[str]] = ["symbol"]
-
-#     replication_method = "FULL_TABLE"
-
-#     schema_filepath = SCHEMAS_DIR / "fundamental.json"
-
-#     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
-#         params = super().get_url_params(context)
-#         return params
-
-#     def parse_response(self, response: Response) -> Iterable[dict]:
-#         resp_json = response.json()
-       
-#         print(resp_json,1234)
-#         return resp_json
 
 
 class IndirectCashflowStream(vnstockStream):
