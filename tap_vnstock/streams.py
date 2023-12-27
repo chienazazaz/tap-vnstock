@@ -29,7 +29,7 @@ class InstrumentsStream(vnstockStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict | None:
         """Return a context dictionary for child streams."""
-        if (record.get("type") == "stock") & (len(record.get("symbol"))=='3'):
+        if ((record.get("type") == "stock") & (len(record["symbol"])==3)):
             return {"symbol": record["symbol"]}
         else:
             return {"symbol": None}
@@ -89,12 +89,12 @@ class EventsStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/timescale-marks', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/timescale-marks', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
-        for row in resp_json:
-            row.update({"symbol":symbol})
-            yield row
+            for row in resp_json:
+                row.update({"symbol":symbol})
+                yield row
 
 
 
@@ -128,7 +128,7 @@ class IndirectCashflowStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/full-financial-reports', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/full-financial-reports', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
@@ -166,7 +166,7 @@ class DirectCashflowStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/full-financial-reports', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/full-financial-reports', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
@@ -203,7 +203,7 @@ class BalanceStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/full-financial-reports', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/full-financial-reports', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
@@ -241,7 +241,7 @@ class IncomeStatementStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/full-financial-reports', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/full-financial-reports', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
@@ -274,7 +274,7 @@ class IndicatorsStream(vnstockStream):
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
         if resp_json:
-            symbol_search = re.search('symbols/(\w{3})/full-financial-reports', response.url, re.IGNORECASE)
+            symbol_search = re.search('symbols\/(\w+)\/financial-indicators', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
