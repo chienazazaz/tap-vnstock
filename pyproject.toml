@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-vnstock"
-version = "0.0.3"
+version = "0.0.4"
 description = "`tap-vnstock` is a Singer tap for vnstock, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["chien l. <lchien063@gmail.com>"]

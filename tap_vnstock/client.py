@@ -12,12 +12,14 @@ from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.pagination import BaseAPIPaginator  # noqa: TCH002
 from singer_sdk.streams import RESTStream
 
+
 import json
 
 _Auth = Callable[[requests.PreparedRequest], requests.PreparedRequest]
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
+    
 class vnstockStream(RESTStream):
     """vnstock stream class."""
 
@@ -85,14 +87,12 @@ class vnstockStream(RESTStream):
             A dictionary of URL query parameters.
         """
         params: dict = {}
-        starting_date = self.get_starting_replication_key_value(context)
-        if starting_date:
-            params["startDate"] = starting_date.format('YYYY-MM-DD')
-        elif self.config.get('start_date'):
+        if self.config.get('start_date'):
             params["startDate"] = self.config.get('start_date')
+            params["endDate"] = (datetime.strptime( self.config.get('start_date'),'%Y-%m-%d %H:%M:%S.%f') + timedelta(days=90) ).strftime('%Y-%m-%d %H:%M:%S.%f') # type: ignore
         else:
-            params["startDate"] = (datetime.today())-timedelta(days=7)
-        params["endDate"] = (datetime.today(),)
+            params["startDate"] = ((datetime.today())-timedelta(days=90)).strftime('%Y-%m-%d %H:%M:%S.%f')
+            params["endDate"] = (datetime.today()).strftime('%Y-%m-%d %H:%M:%S.%f')
         return params
         
 

@@ -1,24 +1,38 @@
 """Stream type classes for tap-vnstock."""
 
 from __future__ import annotations
+from itertools import count
 
 from typing import Any, Dict, Iterable, List, Optional, Tuple, ClassVar
 
 from pathlib import Path
 
 from requests import Response
-from datetime import datetime
+from datetime import date, datetime, timedelta
 import re
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
 from tap_vnstock.client import vnstockStream
+from singer_sdk.pagination import BaseHATEOASPaginator
 
-# TODO: Delete this is if not using json files for schema definition
+from urllib.parse import urlparse, parse_qs, parse_qsl,urlencode
+
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
-# TODO: - Override `UsersStream` and `GroupsStream` with your own stream definition.
-#       - Copy-paste as many times as needed to create multiple stream types.
 
 
+class QuotesPaginator(BaseHATEOASPaginator):
+    def get_next_url(self, response):
+
+        url = urlparse(response.request.url)
+        params = parse_qs(url.query,encoding='utf-8') # type: ignore
+        # startDate = params.get('startDate')[0]
+        endDate = datetime.strptime(params.get('endDate')[0],'%Y-%m-%d %H:%M:%S.%f') # type: ignore
+
+        if (endDate < datetime.today()):
+            startDate = (endDate + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S.%f')
+            endDate = (endDate + timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S.%f')
+            return urlencode({"startDate":startDate,"endDate":endDate})
+        
 class InstrumentsStream(vnstockStream):
     records_jsonpath = "$[*]"
     path = "/instruments"
@@ -29,10 +43,10 @@ class InstrumentsStream(vnstockStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict | None:
         """Return a context dictionary for child streams."""
-        if ((record.get("type") == "stock") & (len(record["symbol"])==3)):
+        if ((record.get("type") == "stock") & (len(record.get("symbol"))==3)):
             return {"symbol": record["symbol"]}
-        else:
-            return {"symbol": None}
+        # else:
+        #     return {"symbol": None}
 
 
 class QuotesStream(vnstockStream):
@@ -54,9 +68,29 @@ class QuotesStream(vnstockStream):
 
     schema_filepath = SCHEMAS_DIR / "quotes.json"
 
-    def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
+    def get_new_paginator(self):
+        """Create a new pagination helper instance.
+
+        If the source API can make use of the `next_page_token_jsonpath`
+        attribute, or it contains a `X-Next-Page` header in the response
+        then you can remove this method.
+
+        If you need custom pagination that uses page numbers, "next" links, or
+        other approaches, please read the guide: https://sdk.meltano.com/en/v0.25.0/guides/pagination-classes.html.
+
+        Returns:
+            A pagination helper instance.
+        """
+
+        return QuotesPaginator()
+        # return 
+
+    def get_url_params(self, context: Optional[dict], next_page_token:dict) -> Dict[str, Any]:
         params = super().get_url_params(context)
         params["limit"] = 100
+
+        if next_page_token:
+            params.update(parse_qsl(next_page_token.path)) # type: ignore
 
         return params
 

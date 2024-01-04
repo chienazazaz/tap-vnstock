@@ -19,7 +19,12 @@ plugins:
     settings:
     - name: access_token
       kind: password
+    config:
+      start_date: '2023-01-01 00:00:00.000'
   loaders:
   - name: target-duckdb
     variant: jwills
     pip_url: target-duckdb~=0.6
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
