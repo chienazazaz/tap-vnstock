@@ -87,7 +87,11 @@ class vnstockStream(RESTStream):
             A dictionary of URL query parameters.
         """
         params: dict = {}
-        if self.config.get('start_date'):
+        starting_date = self.get_starting_replication_key_value(context)
+        if starting_date:
+            params["startDate"] = starting_date
+            params["endDate"] = (datetime.strptime( starting_date,'%Y-%m-%d %H:%M:%S.%f') + timedelta(days=90) ).strftime('%Y-%m-%d %H:%M:%S.%f')
+        elif self.config.get('start_date'):
             params["startDate"] = self.config.get('start_date')
             params["endDate"] = (datetime.strptime( self.config.get('start_date'),'%Y-%m-%d %H:%M:%S.%f') + timedelta(days=90) ).strftime('%Y-%m-%d %H:%M:%S.%f') # type: ignore
         else:
