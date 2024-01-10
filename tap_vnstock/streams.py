@@ -38,12 +38,12 @@ class InstrumentsStream(vnstockStream):
     path = "/instruments"
     name = "instruments"
     primary_keys: ClassVar[list[str]] = ["symbol"]
-    schema_filepath = SCHEMAS_DIR / "instruments.json"
-    replication_method = "FULL_TABLE"
+    schema_filepath = SCHEMAS_DIR / "instruments.json" # type: ignore
+    replication_method = "FULL_TABLE" # type: ignore
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict | None:
         """Return a context dictionary for child streams."""
-        if ((record.get("type") == "stock") & (len(record.get("symbol"))==3)):
+        if ((record.get("type") == "stock") & (len(record.get("symbol"))==3)): # type: ignore
             return {"symbol": record["symbol"]}
         # else:
         #     return {"symbol": None}
@@ -62,11 +62,11 @@ class QuotesStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol", "date"]
 
-    replication_key = "date"
+    replication_key = "date" # type: ignore
 
-    replication_method = "INCREMENTAL"
+    replication_method = "INCREMENTAL" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "quotes.json"
+    schema_filepath = SCHEMAS_DIR / "quotes.json" # type: ignore
 
     def get_new_paginator(self):
         """Create a new pagination helper instance.
@@ -108,11 +108,11 @@ class EventsStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol", "date"]
 
-    replication_key = "date"
+    replication_key = "date" # type: ignore
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "events.json"
+    schema_filepath = SCHEMAS_DIR / "events.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -146,9 +146,9 @@ class IndirectCashflowStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol"]
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "financial_reports.json"
+    schema_filepath = SCHEMAS_DIR / "financial_reports.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -184,9 +184,9 @@ class DirectCashflowStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol"]
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "financial_reports.json"
+    schema_filepath = SCHEMAS_DIR / "financial_reports.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -221,9 +221,9 @@ class BalanceStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol"]
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "financial_reports.json"
+    schema_filepath = SCHEMAS_DIR / "financial_reports.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -259,9 +259,9 @@ class IncomeStatementStream(vnstockStream):
 
     primary_keys: ClassVar[list[str]] = ["symbol"]
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "financial_reports.json"
+    schema_filepath = SCHEMAS_DIR / "financial_reports.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -293,13 +293,13 @@ class IndicatorsStream(vnstockStream):
 
     name = "indicators"
 
-    path = "/symbols/{symbol}/financial-indicators"
+    path = "symbols/{symbol}/financial-indicators"
 
-    primary_keys: ClassVar[list[str]] = ["symbol"]
+    primary_keys: ClassVar[list[str]] = ["symbol","shortName"]
 
-    replication_method = "FULL_TABLE"
+    replication_method = "FULL_TABLE" # type: ignore
 
-    schema_filepath = SCHEMAS_DIR / "indicators.json"
+    schema_filepath = SCHEMAS_DIR / "indicators.json" # type: ignore
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
@@ -307,8 +307,8 @@ class IndicatorsStream(vnstockStream):
 
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
+        symbol_search = re.search('symbols\/(\w+)\/financial-indicators', response.url, re.IGNORECASE)
         if resp_json:
-            symbol_search = re.search('symbols\/(\w+)\/financial-indicators', response.url, re.IGNORECASE)
             assert symbol_search is not None
             symbol = symbol_search.group(1)
             for row in resp_json:
