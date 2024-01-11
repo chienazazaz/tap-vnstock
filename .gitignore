@@ -137,3 +137,5 @@ dmypy.json
 .vscode/*
 plugins/*
 tests/
+
+*.session.sql
