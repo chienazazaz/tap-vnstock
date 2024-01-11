@@ -146,7 +146,7 @@ class IndirectCashflowStream(vnstockStream):
 
     path = "/symbols/{symbol}/full-financial-reports"
 
-    primary_keys: ClassVar[list[str]] = ["symbol"]
+    primary_keys: ClassVar[list[str]] = ["symbol",'id']
 
     replication_method = "FULL_TABLE"  # type: ignore
 
@@ -186,7 +186,7 @@ class DirectCashflowStream(vnstockStream):
 
     path = "/symbols/{symbol}/full-financial-reports"
 
-    primary_keys: ClassVar[list[str]] = ["symbol"]
+    primary_keys: ClassVar[list[str]] = ["symbol",'id']
 
     replication_method = "FULL_TABLE"  # type: ignore
 
@@ -226,7 +226,7 @@ class BalanceStream(vnstockStream):
 
     path = "/symbols/{symbol}/full-financial-reports"
 
-    primary_keys: ClassVar[list[str]] = ["symbol"]
+    primary_keys: ClassVar[list[str]] = ["symbol",'id']
 
     replication_method = "FULL_TABLE"  # type: ignore
 
@@ -266,7 +266,7 @@ class IncomeStatementStream(vnstockStream):
 
     path = "/symbols/{symbol}/full-financial-reports"
 
-    primary_keys: ClassVar[list[str]] = ["symbol"]
+    primary_keys: ClassVar[list[str]] = ["symbol",'id']
 
     replication_method = "FULL_TABLE"  # type: ignore
 
