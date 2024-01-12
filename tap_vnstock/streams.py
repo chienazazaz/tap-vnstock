@@ -20,7 +20,7 @@ from urllib.parse import urlparse, parse_qs, parse_qsl, urlencode
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
-class QuotesPaginator(BaseHATEOASPaginator):
+class FireAntPaginator(BaseHATEOASPaginator):
     def get_next_url(self, response):
         url = urlparse(response.request.url)
         params = parse_qs(url.query, encoding="utf-8")  # type: ignore
@@ -82,7 +82,7 @@ class QuotesStream(vnstockStream):
             A pagination helper instance.
         """
 
-        return QuotesPaginator()
+        return FireAntPaginator()
         # return
 
     def get_url_params(
@@ -112,15 +112,34 @@ class EventsStream(vnstockStream):
 
     replication_key = "date"  # type: ignore
 
-    replication_method = "FULL_TABLE"  # type: ignore
+    replication_method = "INCREMENTAL"  # type: ignore
 
     schema_filepath = SCHEMAS_DIR / "events.json"  # type: ignore
 
-    def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
+    def get_url_params(self, context: Optional[dict], next_page_token: dict) -> Dict[str, Any]:
         params = super().get_url_params(context)
         params["limit"] = 100
 
+        if next_page_token:
+            params.update(parse_qsl(next_page_token.path))  # t
+
         return params
+
+    def get_new_paginator(self):
+        """Create a new pagination helper instance.
+
+        If the source API can make use of the `next_page_token_jsonpath`
+        attribute, or it contains a `X-Next-Page` header in the response
+        then you can remove this method.
+
+        If you need custom pagination that uses page numbers, "next" links, or
+        other approaches, please read the guide: https://sdk.meltano.com/en/v0.25.0/guides/pagination-classes.html.
+
+        Returns:
+            A pagination helper instance.
+        """
+
+        return FireAntPaginator()
 
     def parse_response(self, response: Response) -> Iterable[dict]:
         resp_json = response.json()
@@ -194,9 +213,9 @@ class DirectCashflowStream(vnstockStream):
 
     def get_url_params(self, context: Optional[dict], *args) -> Dict[str, Any]:
         params = super().get_url_params(context)
-        params["limit"] = 1
+        params["limit"] = 4
         params["year"] = datetime.today().year
-        params["quarter"] = datetime.today().month // 3 + 1
+        params["quarter"] = (datetime.today().month // 3) + 1
         params["type"] = 3
 
         return params
