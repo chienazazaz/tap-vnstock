@@ -29,7 +29,7 @@ class FireAntPaginator(BaseHATEOASPaginator):
 
         if endDate < datetime.today():
             startDate = (endDate + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S.%f")
-            endDate = (endDate + timedelta(days=30)).strftime("%Y-%m-%d %H:%M:%S.%f")
+            endDate = (endDate + timedelta(days=90)).strftime("%Y-%m-%d %H:%M:%S.%f")
             return urlencode({"startDate": startDate, "endDate": endDate})
 
 
